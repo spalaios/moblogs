@@ -1,0 +1,22 @@
+                                                    Blog 
+
+Features
+1. User will be able to create their account
+2. based on the account presence they will  be able to create, delete their own posts, can comment on other peoples posts
+3. General public will be able to see other peoples post
+4. User will have its own profile page
+
+Nice to have 
+1. like 
+2. followers and followees
+3. profile picture 
+
+
+Technology implementation
+1. Create the structure for the database in mongodb
+2. Error route handling
+3. Use mongoose orm
+4. session and cookie based mechanism
+5. authentication
+6. authorization
+7. security concerns
