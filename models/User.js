@@ -27,7 +27,7 @@ const userSchema = new Schema({
     required: true,
   },
   contact_no: {
-    type: NumberLong
+    type: Number
   }
 });
 

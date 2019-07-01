@@ -10,6 +10,14 @@ $('.createPostBtn').on('click', function(e) {
     data: {title, content}
   }).done(function(data) {
     console.log(data);
+    if(data.status && data.status == 1) {
+      resetPostForm();
+    }
   });
 
-})
+});
+
+function resetPostForm() {
+  $('#postTitle').val('');
+  $('#postContent').val('');
+}
