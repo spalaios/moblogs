@@ -95,7 +95,7 @@ async function initateMyApp() {
       });
     }
   } catch (error) {
-    console.log('something went wrong while starting the app server');
+    console.log('something went wrong while starting the app server', error);
   }
 }
 

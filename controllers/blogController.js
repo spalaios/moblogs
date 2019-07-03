@@ -1,7 +1,9 @@
+const Joi = require('@hapi/joi');
+const postSchema = require('../models/Post');
 
 
 exports.savePost = async (req, res, next) => {
-  console.log("Request body",req.body);
+  // console.log("Request body",req.body);
 
   const { title, content } = req.body;
 
@@ -31,4 +33,24 @@ exports.savePost = async (req, res, next) => {
     res.send({status: 0, msg: {result}});
   }
 
+}
+
+exports.getAllPosts = async (req, res, next) => {
+  //aggregate all the posts and project it certain way and send it
+  //try sending data in these styles
+  //1. via normal find and project 
+  //2. via aggregation
+  //3. via lookup - learn about it
+  //4. via populate and aggregte it
+postSchema.find({}).populate('userId');
+const allPostData =  await postSchema.aggregate([ 
+   { $match: {}},
+   { $project: { _id: 0,  "postTitle": "$title", "postContent": "$content", userId: 1}}
+ ]);
+
+ if(allPostData) {
+   return res.send({msg: 1, data: allPostData});
+ }else {
+   return res.send({msg: 0, data: {}});
+ }
 }
