@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 const postSchema = require('../models/Post');
-
+const _ = require('lodash');
 
 exports.savePost = async (req, res, next) => {
   // console.log("Request body",req.body);
@@ -45,7 +45,14 @@ exports.getAllPosts = async (req, res, next) => {
 postSchema.find({}).populate('userId');
 const allPostData =  await postSchema.aggregate([ 
    { $match: {}},
-   { $project: { _id: 0,  "postTitle": "$title", "postContent": "$content", userId: 1}}
+   { $lookup: {
+     from: 'users',
+     localField: "userId",
+     foreignField: "_id",
+     as: "user"
+   } },
+   { $unwind: "$user"},
+   { $project: { _id: 0,  "postTitle": "$title", "postContent": "$content", user: 1}}
  ]);
 
  if(allPostData) {
