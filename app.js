@@ -6,6 +6,7 @@ var logger = require('morgan');
 const config = require('./config');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Counter = require('./models/Counter');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -90,8 +91,22 @@ async function initateMyApp() {
     const mongooseConnection = await mongoose.connect(config.db, ({useNewUrlParser: true}));
     if(mongooseConnection) {
       console.log("Mongodb server running...");
-      app.listen(config.app, () => {
+      app.listen(config.app, async () => {
         console.log("Blog App server running...");
+        const postIdCounter = await Counter.findOne({ _id: "postid"});
+        const userIdCounter = await Counter.findOne({ _id: "userid"});
+        if(!postIdCounter) {
+          const isPostIdCounter = await Counter.create({ _id: "postid", sequence_value: 0});
+          if(isPostIdCounter) {
+            console.log("Post id counter created");
+          }
+        }
+        if(!userIdCounter) {
+          const isUserIdCounter = await Counter.create({ _id: "userid", sequence_value: 0});
+          if(isUserIdCounter) {
+            console.log("User id counter created");
+          }
+        }
       });
     }
   } catch (error) {

@@ -23,6 +23,10 @@ const postSchema = new Schema({
   comments: {
     type: Schema.Types.ObjectId,
     ref: 'Comment'
+  },
+  _id: {
+    type: Number,
+    required: true
   }
 });
 

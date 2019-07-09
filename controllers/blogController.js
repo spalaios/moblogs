@@ -1,6 +1,7 @@
 const Joi = require('@hapi/joi');
 const postSchema = require('../models/Post');
 const _ = require('lodash');
+const { getNextSequenceValue } = require('../utilites');
 
 exports.savePost = async (req, res, next) => {
   // console.log("Request body",req.body);
@@ -20,10 +21,12 @@ exports.savePost = async (req, res, next) => {
         title: title,
         content: content,
         created: new Date(),
-        userId: req.user
+        userId: req.user,
+        _id: getNextSequenceValue("postid")
       });
      const isPostSaved = await newPost.save();
      if(isPostSaved) {
+       console.log("Post saved status", isPostSaved);
        res.send({status: 1, msg: {}});
      }
     } catch (error) {
@@ -52,7 +55,7 @@ const allPostData =  await postSchema.aggregate([
      as: "user"
    } },
    { $unwind: "$user"},
-   { $project: { _id: 0,  "postTitle": "$title", "postContent": "$content", user: 1}}
+   { $project: { _id: 0,  "postTitle": "$title", "postContent": "$content", "userDetails": { "name": { $concat: [ "$user.firstname"," ", "$user.lastname"] }, "gender": { $cond: { if: { $eq: ["$user.gender", "M"]}, then: "male", else: "female"}}, "email": "$user.email"}}}
  ]);
 
  if(allPostData) {
