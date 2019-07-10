@@ -17,12 +17,15 @@ exports.savePost = async (req, res, next) => {
 
   if(_.isNull(error)) {
     try {
+      let postId = await getNextSequenceValue("postid");
+      console.log("Getnextfunction", postId);
+    
       const newPost = new postSchema({
         title: title,
         content: content,
         created: new Date(),
         userId: req.user,
-        _id: getNextSequenceValue("postid")
+        _id: postId
       });
      const isPostSaved = await newPost.save();
      if(isPostSaved) {
