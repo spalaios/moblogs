@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const async = require('async');
+const request = require('request');
+
 const config = require('./config');
 const mongoose = require('mongoose');
 const User = require('./models/User');
@@ -27,7 +30,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(async (req, res, next) => {
   try {
     const userCount = await User.count({});
-    
     
     
     if(userCount <= 0) {
@@ -107,6 +109,8 @@ async function initateMyApp() {
             console.log("User id counter created");
           }
         }
+
+        makeMultipleCreatePostRequest(20);
       });
     }
   } catch (error) {
@@ -116,5 +120,42 @@ async function initateMyApp() {
 
 initateMyApp();
 
+
+
+
+function makeMultipleCreatePostRequest(number) {
+  const requestArray = [];
+  let option = {
+    url: "http://localhost:3000/post/create",
+    method: "POST",
+    json: {
+      "title": "Concurent request",
+      "content": "concurenncy level being tested"
+    } 
+  }
+
+
+  for(let i=0; i<number; i++) {
+    requestArray.push(function(callback) {
+      request(option, (error, response, body) => {
+        if(error) {
+          callback(error);
+          return;
+        }
+        callback(null, body);
+      })
+    });
+  }
+
+  async.parallel(requestArray,
+    function(err, result) {
+      if(err) {
+        console.log("concurrency request me locha hai", err);
+        return;
+      }
+      console.log("Results array", result);
+    }
+  )
+}
 
 module.exports = app;
