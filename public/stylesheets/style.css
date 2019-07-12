@@ -6,3 +6,29 @@
 a {
   color: #00B7FF;
 } */
+
+.post-container {
+  border: 1px solid black;
+  margin: 15px 0;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: black;
+  display: block;
+}
+
+.post-container:focus, .post-container:active {
+  color: black;
+}
+
+
+.post-title-container h2 {
+  margin: 10px 0;
+}
+
+.singlepost-container {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+}

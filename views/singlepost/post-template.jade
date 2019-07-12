@@ -1,0 +1,12 @@
+.singlepost-block(id="#{post._id}")
+  .singlepost-header
+    h3 #{post.postTitle}
+  .singlepost-content
+    p #{post.postContent}
+    .singlepost-author-container
+      if !!post.userDetails.name
+        .singlepost-author-name #{post.userDetails.name}
+      if !!post.userDetails.email
+        .singlepost-author-email #{post.userDetails.email}
+  .delete-btn-block
+    button.btn.btn-danger.btn-block.my-3.delete-post Delete

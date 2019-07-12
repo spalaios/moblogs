@@ -14,5 +14,10 @@ router.post('/create', blogController.savePost);
 
 router.get('/all', blogController.getAllPosts);
 
+router.get('/:id', blogController.getSinglePost);
+
+router.post('/:id', blogController.deletePost);
+
+
 module.exports = router;
 

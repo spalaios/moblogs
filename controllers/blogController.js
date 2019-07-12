@@ -58,12 +58,60 @@ const allPostData =  await postSchema.aggregate([
      as: "user"
    } },
    { $unwind: "$user"},
-   { $project: { _id: 0,  "postTitle": "$title", "postContent": "$content", "userDetails": { "name": { $concat: [ "$user.firstname"," ", "$user.lastname"] }, "gender": { $cond: { if: { $eq: ["$user.gender", "M"]}, then: "male", else: "female"}}, "email": "$user.email"}}}
+   { $project: { _id: 1,  "postTitle": "$title", "postContent": "$content", "userDetails": { "name": { $concat: [ "$user.firstname"," ", "$user.lastname"] }, "gender": { $cond: { if: { $eq: ["$user.gender", "M"]}, then: "male", else: "female"}}, "email": "$user.email"}}}
  ]);
 
- if(allPostData) {
-   return res.send({msg: 1, data: allPostData});
- }else {
-   return res.send({msg: 0, data: {}});
- }
+//  if(allPostData) {
+//    return res.send({msg: 1, data: allPostData});
+//  }else {
+//    return res.send({msg: 0, data: {}});
+//  }
+ res.render('allposts/index', {
+   posts: (allPostData.length > 0) ? allPostData : []
+ })
 }
+
+
+exports.getSinglePost = async (req, res, next) => {
+  const postId = req.params.id;
+
+  //find the post with the given postid
+  const foundPost = await postSchema.aggregate([ 
+    { $match: {_id: parseInt(postId)}},
+    { $lookup: {
+      from: 'users',
+      localField: "userId",
+      foreignField: "_id",
+      as: "user"
+    } },
+    { $unwind: "$user"},
+    { $project: { _id: 1,  "postTitle": "$title", "postContent": "$content", "userDetails": { "name": { $concat: [ "$user.firstname"," ", "$user.lastname"] }, "gender": { $cond: { if: { $eq: ["$user.gender", "M"]}, then: "male", else: "female"}}, "email": "$user.email"}}}
+  ])
+  // return res.send({data: foundPost});
+  try{
+    if(foundPost) {
+      res.render('singlepost/index', {
+        post: foundPost[0]
+      });
+      return;
+    }
+  }catch(error) {
+    console.log("Error while fetching data for a single post", error);
+  }
+}
+
+exports.deletePost = async (req, res, next) => {
+  const { postId } = req.body;
+
+  const foundPost = await postSchema.findByIdAndDelete(parseInt(postId));
+
+  try{
+    if(foundPost) {
+      console.log('Post deleted successfully');
+      res.send({status: 1, msg: {}});
+    }
+  }catch(error) {
+    console.log("Error while deleting", error);
+  }
+  
+};

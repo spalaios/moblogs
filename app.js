@@ -109,8 +109,6 @@ async function initateMyApp() {
             console.log("User id counter created");
           }
         }
-
-        makeMultipleCreatePostRequest(20);
       });
     }
   } catch (error) {

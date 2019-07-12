@@ -1,0 +1,15 @@
+if posts.length > 0
+  each post, index in posts
+    .row
+      .col-12
+        a.post-container(href="/post/#{post._id}" id="#{post._id}")
+          .post-title-container
+            if !!post.postTitle
+              h4 #{post.postTitle}
+          //- .post-author-container
+            if !!post.userDetails.name
+              .post-author-name #{post.userDetails.name}
+            if !!post.userDetails.gender
+              .post-author-gender #{post.userDetails.gender}
+            if !!post.userDetails.email
+              .post-author-email #{post.userDetails.email}
