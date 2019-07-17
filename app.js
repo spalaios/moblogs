@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const async = require('async');
 const request = require('request');
+const session = require('express-session');
+const mongdDbStore = require('connect-mongodb-session')(session);
 
 const config = require('./config');
 const mongoose = require('mongoose');
@@ -17,6 +19,16 @@ const blogRouter = require('./routes/blogs');
 
 var app = express();
 
+const store = new mongdDbStore({
+  uri:config.db,
+  collection: 'sessions'
+});
+
+store.on('error', (error) => {
+  console.log("Error while initalizing session store");
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,6 +37,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(session({
+  secret: 'suraj',
+  resave: false,
+  saveUninitialized: true,
+  store: store
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(async (req, res, next) => {

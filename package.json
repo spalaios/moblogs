@@ -8,9 +8,11 @@
   "dependencies": {
     "@hapi/joi": "^15.1.0",
     "async": "^3.1.0",
+    "connect-mongodb-session": "^2.2.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-session": "^1.16.2",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "lodash": "^4.17.11",
