@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
-const postSchema = require('../models/Post');
 const _ = require('lodash');
+const postSchema = require('../models/Post');
 const { getNextSequenceValue } = require('../utilites');
 
 exports.savePost = async (req, res, next) => {

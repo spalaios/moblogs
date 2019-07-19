@@ -18,16 +18,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
-  },
-  age: {
-    type: Number
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
-  contact_no: {
-    type: Number
   }
 });
 

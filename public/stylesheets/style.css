@@ -32,3 +32,11 @@ a {
   padding: 15px;
   margin: 20px 0;
 }
+
+
+ .signup-cotainer {
+   background: lightgray;
+    padding: 20px; 
+    margin-top: 50px;
+    border-radius: 10px;
+ }

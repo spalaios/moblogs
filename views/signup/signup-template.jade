@@ -1,0 +1,24 @@
+.row.mt-4
+  .col-12
+    .row
+      .col-6
+        .form-group
+          lable(for="firstname") FirstName
+          input#firstname.form-control(type="text")
+       .col-6
+        .form-group
+          lable(for="lastname") LastName
+          input#lastname.form-control(type="text")
+    .form-group
+      label(for="email") Email
+      input#email.form-control(type="email")
+
+      .form-group
+      label(for="password") Password
+      input#password.form-control(type="text")
+
+      .form-group
+      label(for="confirmpassword") confirmpassword
+      input#confirmpassword.form-control(type="text")
+
+      button.btn.btn-success.btn-block.my-3.signup(type="button") Signup
