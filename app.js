@@ -46,42 +46,42 @@ app.use(session({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(async (req, res, next) => {
-  try {
-    const userCount = await User.count({});
+// app.use(async (req, res, next) => {
+//   try {
+//     const userCount = await User.count({});
     
     
-    if(userCount <= 0) {
-      //create a new user and save it to the database and add the user to the req object
-      const user =  new User({
-        firstname: 'Suraj',
-        lastname: 'Palai',
-        email: 'palaisuraj@gmail.com',
-        password: '@surajpalai',
-        gender: 'M'
-      });
+//     if(userCount <= 0) {
+//       //create a new user and save it to the database and add the user to the req object
+//       const user =  new User({
+//         firstname: 'Suraj',
+//         lastname: 'Palai',
+//         email: 'palaisuraj@gmail.com',
+//         password: '@surajpalai',
+//         gender: 'M'
+//       });
 
-      const userSavedStatus = await user.save();
+//       const userSavedStatus = await user.save();
 
-      if(userSavedStatus) {
-        req.user = user;
-      }
+//       if(userSavedStatus) {
+//         req.user = user;
+//       }
       
 
-    }else {
-      //just find by the given id
-      const existingUser = await User.findById('5d1a5bc762d2dd1991dad80d');
-      if(existingUser) {
-        req.user = existingUser;
-      }
-    }
+//     }else {
+//       //just find by the given id
+//       const existingUser = await User.findById('5d1a5bc762d2dd1991dad80d');
+//       if(existingUser) {
+//         req.user = existingUser;
+//       }
+//     }
 
-    next();
+//     next();
     
-  } catch (error) {
-    console.log("Error while setting user to the req object", error);
-  }
-});
+//   } catch (error) {
+//     console.log("Error while setting user to the req object", error);
+//   }
+// });
 
 
 app.use('/', indexRouter);

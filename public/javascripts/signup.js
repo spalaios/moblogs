@@ -27,4 +27,6 @@ function resetPostForm() {
   $('#email').val('');
   $('#password').val('');
   $('#confirmpassword').val('');
+  $('#firstname').val();
+  $('#lastname').val();
 }
