@@ -7,7 +7,14 @@ const blogController = require('../controllers/blogController');
 const router = express.Router();
 
 router.get('/create', (req, res, next) => {
-  res.render('postAdd/index');
+  if(req.session.user) {
+    res.render('postAdd/index');
+  }else {
+    res.send({
+      status: 0,
+      msg: "Not authorized"
+    });
+  }
 });
 
 router.post('/create', blogController.savePost);

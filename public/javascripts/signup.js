@@ -19,7 +19,6 @@ $(".signup").on('click', function(e) {
       resetPostForm();
     }
   });
-
 });
 
 
@@ -27,6 +26,6 @@ function resetPostForm() {
   $('#email').val('');
   $('#password').val('');
   $('#confirmpassword').val('');
-  $('#firstname').val();
-  $('#lastname').val();
+  $('#firstname').val('');
+  $('#lastname').val('');
 }

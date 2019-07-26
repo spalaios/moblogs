@@ -1,0 +1,10 @@
+form.mt-4
+  .form-group
+    label(for='email') Email address
+    input#email.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email')
+    //- small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+  .form-group
+    label(for='password') Password
+    input#password.form-control(type='password', placeholder='Password')
+  .form-group.form-check
+  button.btn.btn-primary.login(type='button') Submit

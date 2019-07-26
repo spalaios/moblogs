@@ -46,43 +46,18 @@ app.use(session({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(async (req, res, next) => {
-//   try {
-//     const userCount = await User.count({});
-    
-    
-//     if(userCount <= 0) {
-//       //create a new user and save it to the database and add the user to the req object
-//       const user =  new User({
-//         firstname: 'Suraj',
-//         lastname: 'Palai',
-//         email: 'palaisuraj@gmail.com',
-//         password: '@surajpalai',
-//         gender: 'M'
-//       });
-
-//       const userSavedStatus = await user.save();
-
-//       if(userSavedStatus) {
-//         req.user = user;
-//       }
-      
-
-//     }else {
-//       //just find by the given id
-//       const existingUser = await User.findById('5d1a5bc762d2dd1991dad80d');
-//       if(existingUser) {
-//         req.user = existingUser;
-//       }
-//     }
-
-//     next();
-    
-//   } catch (error) {
-//     console.log("Error while setting user to the req object", error);
-//   }
-// });
-
+app.use((req, res, next) => {
+  console.log("User Session", req.session);
+  if(!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+  .then(user => {
+    req.user = user;
+    next();
+  })
+  .catch(err => console.log(err));
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

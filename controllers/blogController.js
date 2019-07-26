@@ -48,27 +48,34 @@ exports.getAllPosts = async (req, res, next) => {
   //2. via aggregation
   //3. via lookup - learn about it
   //4. via populate and aggregte it
-postSchema.find({}).populate('userId');
-const allPostData =  await postSchema.aggregate([ 
-   { $match: {}},
-   { $lookup: {
-     from: 'users',
-     localField: "userId",
-     foreignField: "_id",
-     as: "user"
-   } },
-   { $unwind: "$user"},
-   { $project: { _id: 1,  "postTitle": "$title", "postContent": "$content", "userDetails": { "name": { $concat: [ "$user.firstname"," ", "$user.lastname"] }, "gender": { $cond: { if: { $eq: ["$user.gender", "M"]}, then: "male", else: "female"}}, "email": "$user.email"}}}
- ]);
+if(!req.session.user) {
+  res.send({
+    status: 0,
+    msg: "Not authorised"
+  });
+}else {
+  postSchema.find({}).populate('userId');
+  const allPostData =  await postSchema.aggregate([ 
+     { $match: {}},
+     { $lookup: {
+       from: 'users',
+       localField: "userId",
+       foreignField: "_id",
+       as: "user"
+     } },
+     { $unwind: "$user"},
+     { $project: { _id: 1,  "postTitle": "$title", "postContent": "$content", "userDetails": { "name": { $concat: [ "$user.firstname"," ", "$user.lastname"] }, "gender": { $cond: { if: { $eq: ["$user.gender", "M"]}, then: "male", else: "female"}}, "email": "$user.email"}}}
+   ]);
+   res.render('allposts/index', {
+     posts: (allPostData.length > 0) ? allPostData : []
+   })
+}
 
 //  if(allPostData) {
 //    return res.send({msg: 1, data: allPostData});
 //  }else {
 //    return res.send({msg: 0, data: {}});
 //  }
- res.render('allposts/index', {
-   posts: (allPostData.length > 0) ? allPostData : []
- })
 }
 
 
